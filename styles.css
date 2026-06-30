@@ -112,30 +112,32 @@ ul { list-style: none; }
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  background: transparent;
+  /* Hero claro/neblina → navbar de vidrio claro desde el inicio para legibilidad */
+  background: rgba(255,255,255,0.88);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
   transition: background var(--ease), box-shadow var(--ease);
 }
 .navbar.is-scrolled {
-  background: rgba(255,255,255,0.96);
-  backdrop-filter: blur(8px);
+  background: rgba(255,255,255,0.97);
   box-shadow: var(--shadow-sm);
 }
 .navbar__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 76px;
+  height: 80px;
 }
-.navbar__brand { display: flex; align-items: center; gap: 0.65rem; }
-.navbar__logo { width: 44px; height: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25)); }
-.navbar__brand-text { display: flex; flex-direction: column; line-height: 1.1; color: #fff; transition: color var(--ease); }
-.navbar__brand-text strong { font-size: 1.05rem; letter-spacing: 0.3px; }
+.navbar__brand { display: flex; align-items: center; gap: 0.7rem; }
+.navbar__logo { width: 54px; height: auto; filter: drop-shadow(0 2px 5px rgba(19,4,122,0.20)); }
+.navbar__brand-text { display: flex; flex-direction: column; line-height: 1.15; color: var(--text-primary); }
+.navbar__brand-text strong { font-size: 1.12rem; letter-spacing: 0.3px; }
 .navbar__brand-text small { font-size: 0.7rem; opacity: 0.85; letter-spacing: 0.5px; text-transform: uppercase; }
-.navbar.is-scrolled .navbar__brand-text { color: var(--text-primary); }
+.navbar__rif { font-weight: 700; color: var(--sefin-navy); opacity: 1 !important; letter-spacing: 0.3px !important; text-transform: none !important; }
 
 .navbar__links { display: flex; align-items: center; gap: 1.75rem; }
 .navbar__links a {
-  font-size: 0.95rem; font-weight: 500; color: #fff;
+  font-size: 0.95rem; font-weight: 500; color: var(--text-primary);
   transition: color var(--ease); position: relative;
 }
 .navbar__links a:not(.btn)::after {
@@ -143,17 +145,15 @@ ul { list-style: none; }
   background: var(--sefin-gold); transition: width var(--ease);
 }
 .navbar__links a:not(.btn):hover::after { width: 100%; }
-.navbar.is-scrolled .navbar__links a:not(.btn) { color: var(--text-primary); }
-.navbar.is-scrolled .navbar__links a:not(.btn):hover { color: var(--sefin-navy); }
+.navbar__links a:not(.btn):hover { color: var(--sefin-navy); }
 
 .navbar__toggle {
   display: none;
-  background: rgba(255,255,255,0.15);
-  border: none; color: #fff; cursor: pointer;
+  background: var(--bg-light);
+  border: none; color: var(--sefin-navy); cursor: pointer;
   width: 44px; height: 44px; border-radius: 10px;
   align-items: center; justify-content: center;
 }
-.navbar.is-scrolled .navbar__toggle { background: var(--bg-light); color: var(--sefin-navy); }
 .navbar__toggle [data-lucide] { width: 24px; height: 24px; }
 
 /* ═══════════════ HERO ═══════════════ */
@@ -167,33 +167,38 @@ ul { list-style: none; }
   align-items: center;
   text-align: center;
   padding: 7rem 0 0;
-  background: var(--bg-navy-band); /* fallback bajo las capas de imagen */
-  color: #fff;
+  background: var(--bg-light); /* fallback claro bajo las capas de imagen */
+  color: var(--text-primary);
   overflow: hidden;
 }
 
-/* ── Fondo con art direction: foto vertical (sefinca-fachada) en móvil
-   y tablet, donde encuadra bien sin recortes; foto horizontal
-   (fachada-sefinca02) solo en PC, TV y pantallas grandes. Ambas con
-   cover limpio, sin desenfoque ni rellenos artificiales. ── */
+/* ── Fondo con art direction: plano cercano de la fachada (SEFIN_fachada_logo_4K)
+   en móvil y tablet, donde encuadra bien sin recortes; plano horizontal con
+   calle (SEFIN_fachada_calle_logo_4K) solo en PC, TV y pantallas grandes. Ambas
+   con cover limpio, sin desenfoque ni rellenos artificiales. ── */
 .hero__bg {
   position: absolute; inset: 0; z-index: 0;
-  background-image: url('img/sefinca-fachada.jpeg');
+  background-image: url('img/SEFIN_fachada_logo_4K.jpg');
   background-position: center top;
   background-size: cover;
   background-repeat: no-repeat;
 }
 @media (min-width: 1024px) {
   .hero__bg {
-    background-image: url('img/fachada-sefinca02.png');
+    background-image: url('img/SEFIN_fachada_calle_logo_4K.webp');
     background-position: center center;
   }
 }
+/* ── Velo "neblina": bruma blanco-azulada ligera y pareja que aclara la
+   portada sin lavarla. La legibilidad del copy ya no depende de este velo:
+   la garantiza el panel .hero__copy, así que aquí basta un tinte sutil. ── */
 .hero__overlay {
   position: absolute; inset: 0;
   z-index: 1;
-  background:
-    linear-gradient(180deg, rgba(11,3,64,0.50) 0%, rgba(19,4,122,0.66) 45%, rgba(11,3,64,0.92) 100%);
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.32) 0%,
+    rgba(245,248,253,0.22) 45%,
+    rgba(232,238,250,0.30) 100%);
 }
 .hero__content {
   position: relative;
@@ -206,16 +211,32 @@ ul { list-style: none; }
 }
 .hero__shield {
   width: 150px; height: auto; margin-bottom: 1.5rem;
-  filter: drop-shadow(0 8px 22px rgba(0,0,0,0.45));
+  filter: drop-shadow(0 10px 26px rgba(11,3,64,0.22));
+}
+/* ── Panel "vidrio claro" detrás del copy: garantiza contraste constante
+   sobre la foto sin importar qué tan clara u oscura sea la zona de fondo
+   que quede debajo. La foto sigue visible en el resto del hero. ── */
+.hero__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 640px;
+  background: rgba(255,255,255,0.72);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  border-radius: 22px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 18px 40px rgba(11,3,64,0.12);
 }
 .hero__eyebrow {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.35rem;
-  color: var(--sefin-gold);
+  color: var(--bg-navy-band);
   margin-bottom: 1.1rem;
-  text-shadow: 0 2px 12px rgba(0,0,0,0.45);
 }
 .hero__years {
   font-family: var(--font-display);
@@ -237,12 +258,14 @@ ul { list-style: none; }
   line-height: 1.05;
   letter-spacing: -1px;
   margin-bottom: 1.25rem;
+  color: var(--bg-navy-band);
 }
 .hero__subtitle {
   font-size: clamp(1rem, 2vw, 1.125rem);
-  color: rgba(255,255,255,0.88);
+  font-weight: 700;
+  color: var(--text-primary);
   max-width: 640px;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
 }
 .hero__cta { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 
@@ -356,35 +379,36 @@ ul { list-style: none; }
   pointer-events: none;
 }
 .section--equipo > .container,
-.section--equipo .gallery,
-.section--equipo .gallery__dots { position: relative; z-index: 1; }
+.section--equipo .gallery { position: relative; z-index: 1; }
 
 .gallery {
   position: relative;
-  max-width: var(--container);
   margin: 0 auto;
-  padding: 0 1.25rem;
+  overflow: hidden;
+  /* Desvanecido lateral: las fotos entran y salen difuminadas en los bordes */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
 }
 .gallery__track {
   display: flex;
+  align-items: stretch;
   gap: 1.1rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  padding: 0.6rem 0.25rem;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  cursor: grab;
+  width: max-content;
+  padding: 0.6rem 0;
+  list-style: none;
+  margin: 0;
+  animation: gallery-scroll 60s linear infinite;
 }
-.gallery__track::-webkit-scrollbar { display: none; }
-.gallery__track.is-dragging { cursor: grabbing; scroll-behavior: auto; scroll-snap-type: none; }
-.gallery__track.is-dragging img { pointer-events: none; }
-.gallery__track:focus-visible { outline: 2px solid var(--sefin-navy); outline-offset: 4px; border-radius: var(--radius-lg); }
+.gallery:hover .gallery__track { animation-play-state: paused; }
+
+@keyframes gallery-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-50% - 0.55rem)); } /* mitad del track + medio gap */
+}
 
 .gallery-card {
   flex: 0 0 auto;
   width: clamp(228px, 74vw, 296px);
-  scroll-snap-align: center;
 }
 .gallery-card figure {
   position: relative;
@@ -435,46 +459,22 @@ ul { list-style: none; }
   .gallery-card figure:hover img { transform: scale(1.06); }
 }
 
-/* ── Flechas de navegación ── */
-.gallery__arrow {
-  position: absolute; top: 50%;
-  transform: translateY(-50%);
-  z-index: 3;
-  width: 48px; height: 48px;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.94);
+/* Frase de cierre del carrusel */
+.gallery__tagline {
+  margin: 1.75rem auto 0;
+  max-width: 720px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.35rem, 3.4vw, 1.9rem);
+  line-height: 1.25;
   color: var(--sefin-navy);
-  border: 1px solid var(--border-light);
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: var(--shadow-md);
-  -webkit-backdrop-filter: blur(6px);
-          backdrop-filter: blur(6px);
-  transition: background var(--ease), color var(--ease), transform var(--ease), opacity var(--ease);
+  letter-spacing: -0.3px;
 }
-.gallery__arrow:hover { background: var(--sefin-navy); color: #fff; transform: translateY(-50%) scale(1.06); }
-.gallery__arrow--prev { left: 0.25rem; }
-.gallery__arrow--next { right: 0.25rem; }
-.gallery__arrow [data-lucide] { width: 24px; height: 24px; }
-.gallery__arrow:disabled { opacity: 0; pointer-events: none; }
-
-/* ── Indicadores (dots) ── */
-.gallery__dots {
-  display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem;
-  margin-top: 1.5rem;
-}
-.gallery__dot {
-  width: 9px; height: 9px;
-  border: none; padding: 0; cursor: pointer;
-  border-radius: 999px;
-  background: rgba(19,4,122,0.22);
-  transition: background var(--ease), width var(--ease);
-}
-.gallery__dot.is-active { background: var(--sefin-navy); width: 26px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .gallery__track { scroll-behavior: auto; }
-  .gallery-card img, .gallery-card figure, .gallery__arrow { transition: none; }
+  .gallery__track { animation: none; }
+  .gallery-card img, .gallery-card figure { transition: none; }
 }
 
 /* ═══════════════ SERVICIOS ═══════════════ */
@@ -579,34 +579,59 @@ ul { list-style: none; }
 }
 
 /* ═══════════════ CLIENTES / CONFIANZA ═══════════════ */
-.clients__logos {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;
-  margin-bottom: 3rem;
+/* Carrusel infinito de logos de clientes. Tarjetas blancas con el logo a color
+   (PNG transparente 1000x400) montadas sobre una pista que se desplaza sin fin.
+   Máscara de desvanecido en los bordes y pausa al pasar el cursor. */
+.clients__marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
 }
-.client-chip {
-  border: 1px solid var(--border-gold);
-  border-radius: 999px;
-  padding: 0.6rem 1.25rem;
-  font-size: 0.85rem; font-weight: 500;
-  color: rgba(255,255,255,0.75);
-  background: rgba(255,255,255,0.04);
+.marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  width: max-content;
+  animation: marquee-scroll 32s linear infinite;
 }
-.industries {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+.clients__marquee:hover .marquee-track { animation-play-state: paused; }
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-50% - 0.55rem)); } /* mitad del track + medio gap */
 }
-.industry {
-  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
-  padding: 1.5rem 0.75rem;
-  border: 1px solid rgba(255,255,255,0.10);
+
+.brand-card {
+  flex: 0 0 auto;
+  display: flex; align-items: center; justify-content: center;
+  width: 180px;
+  height: 104px;
+  padding: 1.2rem 1.5rem;
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: var(--radius);
-  text-align: center;
-  transition: border-color var(--ease), background var(--ease);
+  background: #ffffff;
+  transition: border-color var(--ease), box-shadow var(--ease), transform var(--ease);
 }
-.industry:hover { border-color: var(--border-gold); background: rgba(255,255,255,0.04); }
-.industry [data-lucide] { width: 28px; height: 28px; color: var(--sefin-gold); }
-.industry span { font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.85); }
+.brand-card:hover {
+  border-color: var(--border-gold);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+  transform: translateY(-3px);
+}
+.brand-card__img {
+  width: 100%;
+  height: auto;
+  max-height: 52px;
+  object-fit: contain;
+  display: block;
+}
+/* Alumware: logo de formato vertical (no wordmark horizontal como el resto),
+   por eso usa su propio recorte ajustado y casi toda la altura disponible
+   de la card para no verse pequeño frente a los demás. */
+.brand-card--lg .brand-card__img { max-height: 64px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
 
 /* ═══════════════ FORMULARIO RECLUTAMIENTO ═══════════════ */
 .recruit-form {
@@ -743,14 +768,12 @@ ul { list-style: none; }
 @media (min-width: 640px) {
   .form-row { grid-template-columns: 1fr 1fr; }
   .services__grid { grid-template-columns: repeat(2, 1fr); }
-  .industries { grid-template-columns: repeat(3, 1fr); }
   .stats { grid-template-columns: repeat(4, 1fr); }
 }
 
 /* Desktop ≥ 1024px */
 @media (min-width: 1024px) {
   .services__grid { grid-template-columns: repeat(3, 1fr); }
-  .industries { grid-template-columns: repeat(6, 1fr); }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .nosotros__grid { grid-template-columns: 1.05fr 0.95fr; gap: 3.5rem; }
   .contacto__grid { grid-template-columns: 1fr 1fr; }
@@ -774,12 +797,39 @@ ul { list-style: none; }
   .recruit-form .btn--block { font-size: 1.12rem; }
 }
 
+/* Navbar en escritorio ≥ 900px: botón "Contáctanos" con fondo blanco para
+   destacar sobre el navbar de vidrio claro */
+@media (min-width: 900px) {
+  .navbar__links .btn--nav {
+    background: #fff;
+    color: var(--sefin-navy);
+    border-color: var(--sefin-navy);
+  }
+  .navbar__links .btn--nav:hover {
+    background: var(--sefin-navy);
+    color: #fff;
+  }
+
+  /* RIF más grande y legible en escritorio, sin afectar la vista móvil */
+  .navbar__rif {
+    font-size: 1.05rem;
+    letter-spacing: 0.4px !important;
+  }
+}
+
+/* RIF aún más grande en pantallas grandes (laptops/desktops amplios) */
+@media (min-width: 1200px) {
+  .navbar__rif {
+    font-size: 1.15rem;
+  }
+}
+
 /* Menú móvil < 900px */
 @media (max-width: 899px) {
   .navbar__toggle { display: flex; }
   .navbar__links {
     position: fixed;
-    top: 76px; left: 0; right: 0;
+    top: 80px; left: 0; right: 0;
     flex-direction: column;
     align-items: stretch;
     gap: 0;
@@ -789,7 +839,7 @@ ul { list-style: none; }
     padding: 0.5rem 1.25rem 1.25rem;
     transform: translateY(-130%);
     transition: transform 0.35s ease;
-    max-height: calc(100vh - 76px);
+    max-height: calc(100vh - 80px);
     overflow-y: auto;
   }
   .navbar__links.is-open { transform: translateY(0); }
@@ -802,19 +852,17 @@ ul { list-style: none; }
 @media (max-width: 639px) {
   .hero { min-height: 92vh; min-height: 92svh; }
   .hero__overlay {
-    background: linear-gradient(180deg, rgba(11,3,64,0.62) 0%, rgba(19,4,122,0.78) 45%, rgba(11,3,64,0.95) 100%);
+    background: linear-gradient(180deg,
+      rgba(255,255,255,0.36) 0%,
+      rgba(245,248,253,0.24) 45%,
+      rgba(232,238,250,0.34) 100%);
   }
   .hero__shield { width: 120px; }
+  .hero__copy { padding: 1.4rem 1.4rem; border-radius: 18px; }
   .hero__cta { flex-direction: column; width: 100%; }
   .hero__cta .btn { width: 100%; }
   .hero__credentials-inner .sep { display: none; }
   .section { padding: 3.5rem 0; }
   .recruit-form { padding: 1.5rem; }
   .footer__bottom-inner { flex-direction: column; text-align: center; }
-
-  .gallery { padding: 0 0.75rem; }
-  .gallery__arrow { width: 42px; height: 42px; }
-  .gallery__arrow [data-lucide] { width: 21px; height: 21px; }
-  .gallery__arrow--prev { left: 0.15rem; }
-  .gallery__arrow--next { right: 0.15rem; }
 }
