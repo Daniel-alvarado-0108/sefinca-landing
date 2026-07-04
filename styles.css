@@ -280,38 +280,38 @@ ul { list-style: none; }
 
 .hero__title {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 800;
   font-size: clamp(2.5rem, 6.5vw, 4.4rem);
   line-height: 1.04;
   letter-spacing: -1.5px;
-  color: #0B0340;
+  color: #060226;
   margin-bottom: 0;
-  /* Refuerzo sutil de contraste para los extremos del titular, que caen en la
-     cola del scrim (donde la opacidad ya bajó). NO sustituye al scrim; solo
-     define el borde de la letra sin tener que agrandar el foco blanco. */
-  text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  /* Sin halo ni sombra: letras gruesas y oscuras, legibles por su propio peso. */
+  text-shadow: none;
 }
 
 /* Eslogan corporativo (verde de la paleta, legible sobre el velo claro) */
 .hero__slogan {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 800;
   font-style: italic;
-  font-size: clamp(1.15rem, 2.8vw, 1.55rem);
-  color: #0E5E23;
+  font-size: clamp(1.4rem, 3.2vw, 1.95rem);
+  color: #073B16;
   letter-spacing: 0.3px;
   margin-top: 0.9rem;
+  text-shadow: none;
 }
 
 .hero__subtitle {
   font-size: clamp(1.05rem, 2.2vw, 1.18rem);
   /* Navy casi negro, grueso, unicolor y sin halo: máxima legibilidad sobre el
      fondo colorido, en armonía con el navy del título y el verde del eslogan. */
-  font-weight: 600;
-  color: #13152B;
+  font-weight: 700;
+  color: #0B0D22;
   max-width: 590px;
   margin: 1rem 0 1.6rem;
   line-height: 1.65;
+  text-shadow: none;
 }
 
 /* Chips de servicios — efecto mini-flyer */
@@ -1070,25 +1070,11 @@ ul { list-style: none; }
       rgba(255,255,255,0.14) 86%,
       rgba(255,255,255,0.00) 100%);
   }
-  /* Halo de legibilidad (sólo mobile): glow claro ceñido al glifo que crea el
-     contraste local necesario donde el texto cruza los uniformes oscuros, sin
-     agrandar el foco blanco. Reemplaza en mobile la sombra oscura del H1. */
-  .hero__title {
-    text-shadow:
-      0 1px 2px rgba(255,255,255,0.92),
-      0 0 9px rgba(255,255,255,0.55),
-      0 1px 3px rgba(0,0,0,0.10);
-  }
-  .hero__slogan {
-    text-shadow:
-      0 1px 2px rgba(255,255,255,0.95),
-      0 0 7px rgba(255,255,255,0.50);
-  }
-  .hero__subtitle {
-    text-shadow:
-      0 1px 2px rgba(255,255,255,0.95),
-      0 0 7px rgba(255,255,255,0.60);
-  }
+  /* Sin halo blanco en mobile: las letras son gruesas y oscuras, y el scrim
+     radial claro del overlay ya aporta el contraste local necesario. */
+  .hero__title { text-shadow: none; }
+  .hero__slogan { text-shadow: none; }
+  .hero__subtitle { text-shadow: none; }
   .hero__badge { font-size: 0.70rem; padding: 0.45rem 0.9rem; white-space: normal; text-align: center; line-height: 1.5; }
   .hero__shield { width: 108px; }
   .hero__services { gap: 0.45rem; }
