@@ -83,7 +83,7 @@
       entries.forEach(function (entry, i) {
         if (entry.isIntersecting) {
           // Delay escalonado para grupos de cards
-          var delay = entry.target.closest('.services__grid, .clients__logos') ? (i % 6) * 80 : 0;
+          var delay = entry.target.closest('.services__grid, .clients__marquee') ? (i % 6) * 80 : 0;
           setTimeout(function () { entry.target.classList.add('is-visible'); }, delay);
           observer.unobserve(entry.target);
         }

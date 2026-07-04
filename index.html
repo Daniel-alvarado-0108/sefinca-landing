@@ -14,7 +14,7 @@
   <meta property="og:url" content="https://sefinca.com/">
   <meta property="og:title" content="SEFIN C.A. — Seguridad y Vigilancia Privada">
   <meta property="og:description" content="Más de 25 años protegiendo industrias y corporaciones en Venezuela. Resuelto Operacional del Estado. Valencia y Puerto Cabello.">
-  <meta property="og:image" content="https://sefinca.com/img/SEFIN_fachada_calle_logo_4K.webp"><!-- TODO: Reemplazar por og-image.jpg dedicada 1200x630 -->
+  <meta property="og:image" content="https://sefinca.com/img/SEFIN_fachada_calle_logo_4K_hd.webp"><!-- TODO: Reemplazar por og-image.jpg dedicada 1200x630 -->
   <meta property="og:locale" content="es_VE">
 
   <!-- ── Twitter Card ── -->
@@ -31,11 +31,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- Preload del escudo (LCP del hero) -->
+  <link rel="preload" as="image" href="img/logo-sefinca.png" fetchpriority="high">
+  <!-- Preload del fondo del hero para pintado rápido (LCP). Se precarga sólo el
+       asset que corresponde al viewport, en línea con el <picture> del hero:
+       recorte vertical 9:16 en mobile, portada apaisada en tablet/desktop. -->
+  <link rel="preload" as="image" href="img/hero-mobile-9x16.webp" media="(max-width: 767px)" fetchpriority="high">
+  <link rel="preload" as="image" href="img/hero-portada.webp" media="(min-width: 768px)" fetchpriority="high">
+
   <!-- ── Estilos ── -->
   <link rel="stylesheet" href="styles.css">
 
-  <!-- ── Lucide Icons CDN ── -->
-  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <!-- ── Lucide Icons CDN (versión fijada: evita que un cambio no auditado
+       en upstream se cargue automáticamente en producción) ── -->
+  <script src="https://unpkg.com/lucide@1.22.0" defer></script>
 </head>
 
 <body>
@@ -68,30 +77,44 @@
   </header>
 
   <!-- ═══════════════ HERO (#inicio) ═══════════════ -->
-  <!-- TODO: Reemplazar la foto de la fachada por una toma profesional del personal/sede cuando el cliente la entregue -->
   <section class="hero" id="inicio">
-    <div class="hero__bg" aria-hidden="true"></div>
-    <div class="hero__overlay"></div>
+    <!-- Fondo del hero con art direction: en mobile (<768px) se sirve un recorte
+         vertical compuesto para 9:16 (guardias del centro + torniquete, sin cortar
+         a nadie); en tablet/desktop, la portada apaisada. El <img> es el fallback. -->
+    <picture class="hero__bg" aria-hidden="true">
+      <source media="(max-width: 767px)" srcset="img/hero-mobile-9x16.webp">
+      <img src="img/hero-portada.webp" alt="" fetchpriority="high">
+    </picture>
+    <div class="hero__overlay" aria-hidden="true"></div>
+    <div class="hero__decor" aria-hidden="true"></div>
+
     <div class="container hero__content reveal">
+      <span class="hero__badge">
+        <i data-lucide="shield-check"></i> Empresa autorizada · Resuelto Operacional MRI N°131-04
+      </span>
       <img src="img/logo-sefinca.png" alt="Escudo de SEFIN C.A." class="hero__shield">
-      <div class="hero__copy">
-        <span class="hero__eyebrow">
-          <strong class="hero__years">Más de 25 años</strong>
-          <span class="hero__eyebrow-rest">al frente de la seguridad privada en Venezuela</span>
-        </span>
-        <h1 class="hero__title">El resguardo que su empresa merece.</h1>
-        <p class="hero__subtitle">
-          Seguridad y vigilancia privada con permisos y autorizaciones al día, estructura
-          sólida y gente de trayectoria. Atendemos industrias, comercios y corporaciones
-          en la región central.
-        </p>
+      <h1 class="hero__title">El resguardo que su empresa merece.</h1>
+      <p class="hero__slogan">Trabajando con responsabilidad.</p>
+      <p class="hero__subtitle">
+        Seguridad y vigilancia privada con permisos al día, estructura sólida y
+        personal de trayectoria para industrias, comercios y corporaciones.
+      </p>
+
+      <!-- Mini-flyer de servicios -->
+      <div class="hero__services" aria-label="Nuestros servicios">
+        <span class="hero__chip"><i data-lucide="building-2"></i> Custodia de instalaciones</span>
+        <span class="hero__chip"><i data-lucide="clipboard-check"></i> Control de acceso</span>
+        <span class="hero__chip"><i data-lucide="camera"></i> Seguridad electrónica</span>
+        <span class="hero__chip"><i data-lucide="clock"></i> Guardias 24 / 7</span>
+        <span class="hero__chip"><i data-lucide="search"></i> Control de pérdidas</span>
       </div>
+
       <div class="hero__cta">
         <a href="https://wa.me/584143467201?text=Hola%2C%20quiero%20proteger%20mi%20empresa%20con%20SEFIN%20C.A."
            class="btn btn--whatsapp" target="_blank" rel="noopener">
           <i data-lucide="message-circle"></i> Quiero proteger mi empresa →
         </a>
-        <a href="#nosotros" class="btn btn--primary">Conozca SEFIN</a>
+        <a href="#servicios" class="btn btn--outline-hero">Ver servicios</a>
       </div>
     </div>
 
@@ -116,48 +139,55 @@
     <div class="container nosotros__grid">
       <div class="nosotros__text reveal">
         <span class="eyebrow eyebrow--green">Quiénes somos</span>
-        <h2 class="section__title">Una estructura seria detrás de cada guardia.</h2>
+        <h2 class="section__title">Detrás de cada guardia de SEFIN, hay una empresa que responde.</h2>
         <p>
-          SEFIN C.A. no es un servicio improvisado. Somos una empresa con gerencia
-          general, estructura administrativa y operativa propia, dirigida por personal
-          con trayectoria comprobada en el sector público y privado. Conocemos las
-          necesidades del cliente.
+          Cuando su empresa contrata seguridad privada, no solo contrata personal:
+          contrata a quien responde si algo falla. SEFIN C.A. es una empresa de
+          seguridad privada constituida, con gerencia general y estructura
+          administrativa y operativa propia, dirigida por personal con trayectoria
+          comprobada en el sector público y privado de seguridad en Venezuela.
         </p>
         <p>
-          Contamos con el <strong>Resuelto Operacional N° 131-04</strong> que otorga el
-          Estado venezolano para ejercer funciones de seguridad privada, adscrito a la
-          Dirección General de los Servicios de Vigilancia y Seguridad Privada
-          (DIGESERVISP), perteneciente al Viceministerio de Seguridad Ciudadana,
-          dependiente del Ministerio del Poder Popular para Relaciones Interiores y
-          Justicia. Eso nos distingue de quienes improvisan en este oficio.
+          Eso significa protocolos definidos, supervisión real y una cadena de mando
+          clara detrás de cada guardia asignado a sus instalaciones — no personal
+          subcontratado sin control ni respaldo.
         </p>
-        <p class="nosotros__sign">— Dirección General, SEFIN C.A.</p>
+        <p>
+          Operamos bajo el <strong>Resuelto Operacional N° 131-04</strong>, la
+          autorización que otorga el Estado venezolano —a través de la Dirección
+          General de los Servicios de Vigilancia y Seguridad Privada (DIGESERVISP),
+          adscrita al Ministerio del Poder Popular para Relaciones Interiores y
+          Justicia— para ejercer funciones de seguridad privada.
+        </p>
+        <p>
+          Para usted como responsable de seguridad, eso se traduce en una sola cosa:
+          contratar a SEFIN es contratar dentro del marco legal, sin exponer a su
+          empresa a los riesgos de trabajar con un proveedor irregular.
+        </p>
       </div>
 
-      <div class="nosotros__aside reveal">
-        <!-- TODO: La foto de la fachada real refuerza "empresa con sede propia". Sustituible por foto del equipo. -->
-        <figure class="nosotros__photo">
-          <img src="img/SEFIN_fachada_logo_4K.jpg" alt="Fachada de la sede de SEFIN C.A." loading="lazy">
-          <figcaption>Sede principal · Valencia, Carabobo</figcaption>
-        </figure>
+      <!-- TODO: La foto de la fachada real refuerza "empresa con sede propia". Sustituible por foto del equipo. -->
+      <figure class="nosotros__photo reveal">
+        <img src="img/SEFIN_fachada_logo_4K_hd.jpg" alt="Fachada de la sede de SEFIN C.A." loading="lazy" width="3840" height="4092">
+        <figcaption>Sede principal · Valencia, Carabobo</figcaption>
+      </figure>
 
-        <div class="stats">
-          <div class="stat">
-            <span class="stat__num">25+</span>
-            <span class="stat__label">Años de experiencia continua</span>
-          </div>
-          <div class="stat">
-            <span class="stat__num">2</span>
-            <span class="stat__label">Sedes: Valencia y Puerto Cabello</span>
-          </div>
-          <div class="stat">
-            <span class="stat__num">24/7</span>
-            <span class="stat__label">Cobertura permanente</span>
-          </div>
-          <div class="stat">
-            <span class="stat__num">100%</span>
-            <span class="stat__label">Personal de trayectoria comprobada</span>
-          </div>
+      <div class="stats reveal">
+        <div class="stat">
+          <span class="stat__num">25+</span>
+          <span class="stat__label">Años de experiencia continua</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">2</span>
+          <span class="stat__label">Sedes: Valencia y Puerto Cabello</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">24/7</span>
+          <span class="stat__label">Cobertura permanente</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">100%</span>
+          <span class="stat__label">Personal de trayectoria comprobada</span>
         </div>
       </div>
     </div>
@@ -397,15 +427,60 @@
     </div>
   </section>
 
+  <!-- ═══════════════ CONTACTO + MAPA (#contacto) ═══════════════ -->
+  <section class="section section--white" id="contacto">
+    <div class="container contacto__grid">
+      <div class="contacto__info reveal">
+        <span class="eyebrow">Contacto</span>
+        <h2 class="section__title">Hablemos de la seguridad de su empresa.</h2>
+
+        <a href="https://wa.me/584143467201?text=Hola%2C%20deseo%20información%20sobre%20los%20servicios%20de%20SEFIN%20C.A."
+           class="btn btn--whatsapp btn--block contacto__wa" target="_blank" rel="noopener">
+          <i data-lucide="message-circle"></i> +58 414 346.7201 — Escribir por WhatsApp
+        </a>
+
+        <ul class="contact-list">
+          <li><i data-lucide="phone"></i> <a href="tel:+582418211657">0241-821.1657</a> <small>(Valencia)</small></li>
+          <li><i data-lucide="phone"></i> <a href="tel:+582423615256">0242-361.5256</a> <small>(Puerto Cabello)</small></li>
+          <li><i data-lucide="mail"></i> <a href="mailto:ventas@sefinca.com">ventas@sefinca.com</a> <small>(Ventas)</small></li>
+          <li><i data-lucide="mail"></i> <a href="mailto:administracion@sefinca.com">administracion@sefinca.com</a> <small>(Administración)</small></li>
+          <li><i data-lucide="map-pin"></i> Valencia, Carabobo <small>(oficina principal)</small></li>
+          <li><i data-lucide="map-pin"></i> Puerto Cabello — Rancho Grande, Calle 26</li>
+        </ul>
+
+        <div class="contacto__creds">
+          <span><strong>RIF:</strong> J-30522739-0</span>
+          <span><strong>Resuelto Operacional:</strong> MRI N°131-04</span>
+          <span><strong>Permiso DARFA:</strong> N° VP 661</span>
+        </div>
+      </div>
+
+      <div class="contacto__map reveal">
+        <iframe
+          title="Ubicación de SEFIN C.A. — Carabobo, Venezuela"
+          src="https://www.google.com/maps?q=10.462101,-68.008297&z=16&output=embed"
+          width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=10.462101,-68.008297"
+           class="btn btn--outline-navy contacto__directions" target="_blank" rel="noopener">
+          <i data-lucide="navigation"></i> Cómo llegar →
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══════════════ RECLUTAMIENTO (#reclutamiento) ═══════════════ -->
-  <section class="section section--light" id="reclutamiento">
+  <!-- Sección secundaria: la empresa no se dedica al reclutamiento; se ubica al
+       final (después de contacto/ubicaciones) y en formato compacto, solo como
+       apoyo para personas interesadas en postularse. -->
+  <section class="section section--light section--reclutamiento" id="reclutamiento">
     <div class="container">
       <div class="section__head reveal">
-        <span class="eyebrow eyebrow--green eyebrow--lg">Únete al equipo</span>
+        <span class="eyebrow eyebrow--green">Únete al equipo</span>
         <h2 class="section__title">¿Quieres trabajar con nosotros?</h2>
         <p class="section__subtitle">
-          Buscamos personas comprometidas, con o sin experiencia previa, para integrarse
-          a nuestro equipo de oficiales. Deja tus datos y nos ponemos en contacto contigo.
+          Si buscas integrarte a nuestro equipo de oficiales, con o sin experiencia,
+          déjanos tus datos y te contactamos.
         </p>
       </div>
 
@@ -471,83 +546,27 @@
     </div>
   </section>
 
-  <!-- ═══════════════ CONTACTO + MAPA (#contacto) ═══════════════ -->
-  <section class="section section--white" id="contacto">
-    <div class="container contacto__grid">
-      <div class="contacto__info reveal">
-        <span class="eyebrow">Contacto</span>
-        <h2 class="section__title">Hablemos de la seguridad de su empresa.</h2>
-
-        <a href="https://wa.me/584143467201?text=Hola%2C%20deseo%20información%20sobre%20los%20servicios%20de%20SEFIN%20C.A."
-           class="btn btn--whatsapp btn--block contacto__wa" target="_blank" rel="noopener">
-          <i data-lucide="message-circle"></i> +58 414 346.7201 — Escribir por WhatsApp
-        </a>
-
-        <ul class="contact-list">
-          <li><i data-lucide="phone"></i> <a href="tel:+582423622750">0242-362.2750</a> <small>(Puerto Cabello)</small></li>
-          <li><i data-lucide="phone"></i> <a href="tel:+582423615256">0242-361.5256</a> <small>(Puerto Cabello)</small></li>
-          <li><i data-lucide="phone"></i> <a href="tel:+582418211657">0241-821.1657</a> <small>(Valencia)</small></li>
-          <li><i data-lucide="mail"></i> <a href="mailto:sefinca@hotmail.com">sefinca@hotmail.com</a></li>
-          <li><i data-lucide="map-pin"></i> Valencia, Carabobo <small>(oficina principal)</small></li>
-          <li><i data-lucide="map-pin"></i> Puerto Cabello — Rancho Grande, Calle 26</li>
-        </ul>
-
-        <div class="contacto__creds">
-          <span><strong>RIF:</strong> J-30522739-0</span>
-          <span><strong>Resuelto Operacional:</strong> MRI N°131-04</span>
-          <span><strong>Permiso DARFA:</strong> N° VP 661</span>
-        </div>
-      </div>
-
-      <div class="contacto__map reveal">
-        <iframe
-          title="Ubicación de SEFIN C.A. — Carabobo, Venezuela"
-          src="https://www.google.com/maps?q=10.462101,-68.008297&z=16&output=embed"
-          width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"></iframe>
-        <a href="https://www.google.com/maps/dir/?api=1&destination=10.462101,-68.008297"
-           class="btn btn--outline-navy contacto__directions" target="_blank" rel="noopener">
-          <i data-lucide="navigation"></i> Cómo llegar →
-        </a>
-      </div>
-    </div>
-  </section>
-
   <!-- ═══════════════ FOOTER ═══════════════ -->
+  <!-- Pie de página clásico: una sola franja horizontal, compacta en el eje Y.
+       Marca · pocos links · copyright · crédito. Sin repetir datos de contacto
+       (ya presentes en la sección #contacto). -->
   <footer class="footer">
-    <div class="container footer__grid">
-      <div class="footer__col">
-        <div class="footer__brand">
-          <img src="img/logo-sefinca.png" alt="Escudo de SEFIN C.A." class="footer__logo">
-          <strong>SEFIN, C.A.</strong>
-        </div>
-        <p>En SEFINCA cuidamos sus intereses.</p>
-      </div>
+    <div class="container footer__inner">
+      <a href="#inicio" class="footer__brand" aria-label="SEFIN C.A. inicio">
+        <img src="img/logo-sefinca.png" alt="Escudo de SEFIN C.A." class="footer__logo">
+        <strong>SEFIN, C.A.</strong>
+      </a>
 
-      <div class="footer__col">
-        <h4>Navegación</h4>
+      <nav class="footer__links" aria-label="Enlaces del pie de página">
         <a href="#nosotros">Nosotros</a>
-        <a href="#equipo">Equipo</a>
         <a href="#servicios">Servicios</a>
         <a href="#clientes">Clientes</a>
-        <a href="#reclutamiento">Únete al equipo</a>
         <a href="#contacto">Contacto</a>
-      </div>
+      </nav>
 
-      <div class="footer__col">
-        <h4>Contacto rápido</h4>
-        <a href="https://wa.me/584143467201" target="_blank" rel="noopener"><i data-lucide="message-circle"></i> +58 414 346.7201</a>
-        <a href="tel:+582423622750"><i data-lucide="phone"></i> 0242-362.2750</a>
-        <a href="tel:+582423615256"><i data-lucide="phone"></i> 0242-361.5256</a>
-        <a href="tel:+582418211657"><i data-lucide="phone"></i> 0241-821.1657</a>
-        <a href="mailto:sefinca@hotmail.com"><i data-lucide="mail"></i> sefinca@hotmail.com</a>
-        <span><i data-lucide="map-pin"></i> Valencia · Puerto Cabello</span>
-      </div>
-    </div>
-
-    <div class="footer__bottom">
-      <div class="container footer__bottom-inner">
-        <span>© 2026 SEFIN C.A. · RIF J-30522739-0 · Todos los derechos reservados.</span>
+      <div class="footer__legal">
+        <span>© 2026 SEFIN C.A. · RIF J-30522739-0</span>
+        <span class="footer__sep" aria-hidden="true">·</span>
         <span>Desarrollado por <a href="https://ainovaproject.com" target="_blank" rel="noopener">AInova</a></span>
       </div>
     </div>
