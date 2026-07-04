@@ -83,6 +83,13 @@
          a nadie); en tablet/desktop, la portada apaisada. El <img> es el fallback. -->
     <picture class="hero__bg" aria-hidden="true">
       <source media="(max-width: 767px)" srcset="img/hero-mobile-9x16.webp">
+      <!-- OPCIONAL (desactivado): recorte 3:4 para el rango intermedio — phablets
+           grandes y tablets pequeñas en vertical (768–1024px, portrait). Menos
+           alto que el 9:16, encuadra mejor a los dos guardias en ese aspecto.
+           Para activarlo, descomentá esta línea; al ir DESPUÉS del source 9:16 y
+           ANTES del <img>, gana sólo en el rango que declara, sin tocar mobile ni
+           desktop. Revisar el scrim para ese breakpoint si se habilita.
+      <source media="(min-width: 768px) and (max-width: 1024px) and (orientation: portrait)" srcset="img/hero-mobile-3x4.webp"> -->
       <img src="img/hero-portada.webp" alt="" fetchpriority="high">
     </picture>
     <div class="hero__overlay" aria-hidden="true"></div>

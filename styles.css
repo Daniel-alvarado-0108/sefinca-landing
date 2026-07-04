@@ -828,12 +828,16 @@ ul { list-style: none; }
   gap: 2.5rem;
   align-items: stretch;
 }
+/* min-width:0 evita que el min-content de los items (p. ej. la lista de
+   contacto con el email largo) infle la pista 1fr y desborde el padding,
+   descentrando el botón de WhatsApp en móviles angostos (iPhone 14, etc.). */
+.contacto__info, .contacto__map { min-width: 0; }
 .contacto__info .section__title { margin: 0.5rem 0 1.5rem; }
 .contacto__wa { margin-bottom: 1.75rem; white-space: normal; line-height: 1.3; text-align: center; }
 .contact-list { display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1.75rem; }
-.contact-list li { display: flex; align-items: center; gap: 0.7rem; color: var(--text-secondary); font-size: 1.05rem; }
+.contact-list li { display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem 0.7rem; min-width: 0; color: var(--text-secondary); font-size: 1.05rem; }
 .contact-list li [data-lucide] { color: var(--sefin-navy); flex-shrink: 0; }
-.contact-list a { color: var(--text-primary); font-weight: 500; transition: color var(--ease); }
+.contact-list a { color: var(--text-primary); font-weight: 500; overflow-wrap: anywhere; transition: color var(--ease); }
 .contact-list a:hover { color: var(--sefin-navy); }
 .contacto__creds {
   display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;
@@ -1050,17 +1054,40 @@ ul { list-style: none; }
 /* Hero compacto en móvil */
 @media (max-width: 639px) {
   .hero { min-height: 92vh; min-height: 92svh; }
-  /* Mobile — bbox medido en 390px: texto ~90% de ancho, alto ~254px, centro
-     vertical ~44%. La columna casi llena el ancho, así que la elipse es ancha
-     por necesidad (regla del punto 5), pero ajustada al alto real del texto y
-     desvaneciendo a 0 en los bordes para no lavar la parte superior/inferior. */
+  /* Mobile — SPOTLIGHT localizado para el nuevo asset hero-mobile-9x16.webp (dos
+     guardias de pie en el lobby; mármol claro arriba, cuerpos NAVY en el centro-
+     inferior). Filosofía "viñeta": el degradado vive SÓLO donde vive el texto y
+     cae rápido a transparente, dejando ver a los oficiales, sus insignias, el
+     mármol y el torniquete nítidos y vibrantes — sin la neblina blanca que lava
+     la escena. La legibilidad sobre los uniformes oscuros no se compra con una
+     placa blanca grande, sino con un HALO claro en las propias letras (ver
+     text-shadow abajo): así el foco puede ser mucho más tenue (núcleo 0.72). */
   .hero__overlay {
-    background: radial-gradient(ellipse 52% 30% at 50% 44%,
-      rgba(255,255,255,0.93) 0%,
-      rgba(255,255,255,0.90) 52%,
-      rgba(255,255,255,0.64) 76%,
-      rgba(255,255,255,0.22) 90%,
+    background: radial-gradient(ellipse 58% 34% at 50% 52%,
+      rgba(255,255,255,0.72) 0%,
+      rgba(255,255,255,0.68) 46%,
+      rgba(255,255,255,0.44) 68%,
+      rgba(255,255,255,0.14) 86%,
       rgba(255,255,255,0.00) 100%);
+  }
+  /* Halo de legibilidad (sólo mobile): glow claro ceñido al glifo que crea el
+     contraste local necesario donde el texto cruza los uniformes oscuros, sin
+     agrandar el foco blanco. Reemplaza en mobile la sombra oscura del H1. */
+  .hero__title {
+    text-shadow:
+      0 1px 2px rgba(255,255,255,0.92),
+      0 0 9px rgba(255,255,255,0.55),
+      0 1px 3px rgba(0,0,0,0.10);
+  }
+  .hero__slogan {
+    text-shadow:
+      0 1px 2px rgba(255,255,255,0.95),
+      0 0 7px rgba(255,255,255,0.50);
+  }
+  .hero__subtitle {
+    text-shadow:
+      0 1px 2px rgba(255,255,255,0.95),
+      0 0 7px rgba(255,255,255,0.60);
   }
   .hero__badge { font-size: 0.70rem; padding: 0.45rem 0.9rem; white-space: normal; text-align: center; line-height: 1.5; }
   .hero__shield { width: 108px; }
