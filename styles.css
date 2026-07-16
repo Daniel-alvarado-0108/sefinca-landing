@@ -202,24 +202,15 @@ ul { list-style: none; }
   filter: saturate(1.14) contrast(1.05) brightness(1.02);
 }
 
-/* Scrim LOCALIZADO detrás del bloque de texto (titular + eslogan + párrafo).
-   Sustituye al velo blanco global que "lavaba" toda la foto (efecto neblina).
-   Es un foco radial tipo spotlight centrado en el copy: núcleo casi blanco que
-   garantiza el contraste del texto oscuro, y desvanecido TOTAL a transparente
-   antes de llegar a los bordes. Así el resto de la escena (guardias, monitores,
-   escudo del torniquete, arquitectura) queda nítido y a todo color, sin lavado.
-   El tamaño/posición de la elipse se afina por breakpoint más abajo, porque el
-   recorte de la imagen y la posición del texto cambian en mobile/tablet/desktop. */
+/* Velo blanco RETIRADO. Antes esta capa "lavaba" la foto (efecto neblina) para
+   ganar contraste con texto oscuro. Ahora el enfoque es el inverso: texto claro
+   sobre un SCRIM oscuro localizado detrás del copy (ver .hero__content::before),
+   dejando la foto a todo color y a los guardias de los lados sin obstruir.
+   Se conserva el elemento (por si hace falta una capa full-image en el futuro),
+   pero sin fondo para no reintroducir la neblina. */
 .hero__overlay {
   position: absolute; inset: 0; z-index: 1;
-  /* Base = TABLET (640–1023px). Ahí el copy ocupa ~88% del ancho (bbox medido),
-     así que la elipse es ancha por necesidad, pero baja rápido a 0 en los bordes. */
-  background: radial-gradient(ellipse 46% 26% at 50% 52%,
-    rgba(255,255,255,0.93) 0%,
-    rgba(255,255,255,0.90) 50%,
-    rgba(255,255,255,0.60) 74%,
-    rgba(255,255,255,0.20) 90%,
-    rgba(255,255,255,0.00) 100%);
+  background: none;
 }
 
 /* Acento decorativo: línea y brillo dorado en la parte superior */
@@ -249,6 +240,54 @@ ul { list-style: none; }
   flex-direction: column;
   align-items: center;
   padding-bottom: 2.75rem;
+}
+
+/* NEBLINA BLANCA semitransparente SOLO detrás del bloque de copy (columna
+   central). Aporta legibilidad al texto oscuro sin "lavar" toda la foto: la
+   capa se desvanece arriba/abajo por el propio degradado (alfa → 0) y a los
+   lados por una máscara, de modo que no parece una placa dura y los guardias
+   quedan visibles a través de la transparencia. Se sitúa por encima de la foto
+   pero por debajo del texto (z-index negativo dentro del contexto de apilado
+   de .hero__content). Valores mobile-first (neblina algo más presente); en
+   ≥1024px se suaviza para que se vea mejor la escena tras los guardias. */
+.hero__content::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  /* Halo RADIAL ceñido tras el copy (móvil): se concentra detrás del texto y
+     cae a transparente ANTES de llegar a los bordes, para que la foto (mármol,
+     guardias) se vea alrededor y NO parezca la imagen entera "nublada". En
+     ≥768px esta regla se sustituye por la neblina suave de pantallas grandes. */
+  inset: -14px -12px;
+  background: radial-gradient(ellipse 74% 56% at 50% 47%,
+    rgba(255,255,255,0.92) 0%,
+    rgba(255,255,255,0.80) 40%,
+    rgba(255,255,255,0.34) 66%,
+    rgba(255,255,255,0)    80%);
+  border-radius: 48px;
+  -webkit-mask-image: none;
+          mask-image: none;
+  pointer-events: none;
+}
+
+/* Neblina más SUAVE y transparente desde 768px (donde se sirve la portada
+   ancha con los guardias centrados justo tras el copy). En laptops el cliente
+   notó el fondo "muy pronunciado" tapando a los guardias; aquí se baja el
+   brillo y se ensancha el desvanecido lateral para que la escena se lea a
+   través de la neblina, manteniendo el copy oscuro perfectamente legible por
+   el alto contraste del navy. */
+@media (min-width: 768px) {
+  .hero__content::before {
+    inset: -30px -64px;
+    background: linear-gradient(180deg,
+      rgba(255,255,255,0)    0%,
+      rgba(255,255,255,0.60) 13%,
+      rgba(255,255,255,0.70) 50%,
+      rgba(255,255,255,0.60) 87%,
+      rgba(255,255,255,0)    100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 19%, #000 81%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, #000 19%, #000 81%, transparent 100%);
+  }
 }
 
 /* Insignia de autorización */
@@ -284,34 +323,36 @@ ul { list-style: none; }
   font-size: clamp(2.5rem, 6.5vw, 4.4rem);
   line-height: 1.04;
   letter-spacing: -1.5px;
-  color: #060226;
+  /* Navy corporativo sobre la neblina blanca (como la referencia aprobada).
+     El contraste lo aporta la neblina, no un borde ni sombra en las letras. */
+  color: var(--sefin-navy);
   margin-bottom: 0;
-  /* Sin halo ni sombra: letras gruesas y oscuras, legibles por su propio peso. */
-  text-shadow: none;
 }
 
-/* Eslogan corporativo (verde de la paleta, legible sobre el velo claro) */
+/* "merece" — mismo navy del título, uniforme como en la referencia. */
+.hero__title-accent {
+  color: var(--sefin-navy);
+}
+
+/* Eslogan corporativo — azul medio sobre la neblina blanca, cursiva. */
 .hero__slogan {
   font-family: var(--font-display);
   font-weight: 800;
   font-style: italic;
   font-size: clamp(1.4rem, 3.2vw, 1.95rem);
-  color: #073B16;
+  color: var(--navy-mid);
   letter-spacing: 0.3px;
   margin-top: 0.9rem;
-  text-shadow: none;
 }
 
 .hero__subtitle {
   font-size: clamp(1.05rem, 2.2vw, 1.18rem);
-  /* Navy casi negro, grueso, unicolor y sin halo: máxima legibilidad sobre el
-     fondo colorido, en armonía con el navy del título y el verde del eslogan. */
+  /* Casi negro-navy sobre la neblina: máximo contraste para el texto pequeño. */
   font-weight: 700;
-  color: #0B0D22;
+  color: var(--text-primary);
   max-width: 590px;
   margin: 1rem 0 1.6rem;
   line-height: 1.65;
-  text-shadow: none;
 }
 
 /* Chips de servicios — efecto mini-flyer */
@@ -968,19 +1009,11 @@ ul { list-style: none; }
   .contacto__grid { grid-template-columns: 1fr 1fr; }
   .hero__shield { width: 148px; }
 
-  /* Desktop — ajustado al bounding box REAL del texto (medido en 1440px):
-     bbox 22%–78% de ancho, centro vertical ~55%. La elipse llega a opacidad 0
-     en ~20%/80%, dejando el 20% exterior de cada lado PIXEL-LIMPIO (guardias de
-     los extremos idénticos a la foto original). Los extremos del H1 caen en la
-     cola del gradiente y se refuerzan con el text-shadow sutil del titular. */
-  .hero__overlay {
-    background: radial-gradient(ellipse 30% 30% at 50% 55%,
-      rgba(255,255,255,0.90) 0%,
-      rgba(255,255,255,0.88) 45%,
-      rgba(255,255,255,0.60) 70%,
-      rgba(255,255,255,0.20) 88%,
-      rgba(255,255,255,0.00) 100%);
-  }
+  /* Desktop/laptop — NO se usa velo full-image (lavaría toda la foto). La
+     neblina suave para pantallas grandes se define en @media (min-width:768px),
+     junto a la regla base, para que aplique en todo el rango que usa la portada
+     ancha (guardias centrados). */
+  .hero__overlay { background: none; }
 
   /* ── Copy más generoso en pantallas grandes (laptop/desktop) ──
      En monitores amplios el texto base se veía minimizado; aquí se
@@ -1059,27 +1092,10 @@ ul { list-style: none; }
 /* Hero compacto en móvil */
 @media (max-width: 639px) {
   .hero { min-height: 92vh; min-height: 92svh; }
-  /* Mobile — SPOTLIGHT localizado para el nuevo asset hero-mobile-9x16.webp (dos
-     guardias de pie en el lobby; mármol claro arriba, cuerpos NAVY en el centro-
-     inferior). Filosofía "viñeta": el degradado vive SÓLO donde vive el texto y
-     cae rápido a transparente, dejando ver a los oficiales, sus insignias, el
-     mármol y el torniquete nítidos y vibrantes — sin la neblina blanca que lava
-     la escena. La legibilidad sobre los uniformes oscuros no se compra con una
-     placa blanca grande, sino con un HALO claro en las propias letras (ver
-     text-shadow abajo): así el foco puede ser mucho más tenue (núcleo 0.72). */
-  .hero__overlay {
-    background: radial-gradient(ellipse 58% 34% at 50% 52%,
-      rgba(255,255,255,0.72) 0%,
-      rgba(255,255,255,0.68) 46%,
-      rgba(255,255,255,0.44) 68%,
-      rgba(255,255,255,0.14) 86%,
-      rgba(255,255,255,0.00) 100%);
-  }
-  /* Sin halo blanco en mobile: las letras son gruesas y oscuras, y el scrim
-     radial claro del overlay ya aporta el contraste local necesario. */
-  .hero__title { text-shadow: none; }
-  .hero__slogan { text-shadow: none; }
-  .hero__subtitle { text-shadow: none; }
+  /* Mobile — sin velo full-image; la legibilidad la da la neblina blanca de
+     .hero__content::before (valores base, algo más presentes que en desktop),
+     que vive sólo tras el copy y deja los laterales de la foto a la vista. */
+  .hero__overlay { background: none; }
   .hero__badge { font-size: 0.70rem; padding: 0.45rem 0.9rem; white-space: normal; text-align: center; line-height: 1.5; }
   .hero__shield { width: 108px; }
   .hero__services { gap: 0.45rem; }
